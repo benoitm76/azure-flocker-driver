@@ -188,13 +188,7 @@ class AzureStorageBlockDeviceAPI(object):
 
             (disk, vmname, lun) = self._get_disk_vmname_lun(blockdevice_id)
             if vmname is not None:
-                if unicode(vmname) != self.compute_instance_id():
-                    raise AlreadyAttachedVolume(blockdevice_id)
-                else:
-                    return self._blockdevicevolume_from_azure_volume(
-                        blockdevice_id,
-                        target_disk.properties.content_length,
-                        attach_to)
+                raise AlreadyAttachedVolume(blockdevice_id)
 
             self._manager.attach_disk(
                 str(attach_to),
