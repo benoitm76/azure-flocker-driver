@@ -102,4 +102,15 @@ class AzureStorageBlockDeviceAPIInterfaceTests(
         minimum_allocatable_size=MIN_ALLOCATION_SIZE,
         device_allocation_unit=MIN_ALLOCATION_UNIT,
         unknown_blockdevice_id_factory=lambda test: unicode(uuid4()))):
-    pass
+
+    def repeat_retries(self):
+        """
+        Override retry policy from base class.
+
+        Azure disks are eventually consistent.  Detach
+        operations may continue to show up in listing
+        results until the VM state settled.
+
+        Retry for 180 seconds.
+        """
+        return [2] * 90
