@@ -30,9 +30,6 @@ class Lun(object):
         Lun.rescan_scsi()
         if lun > 31:
             raise Exception('valid lun parameter is 0 - 31, inclusive')
-        base = '/dev/sd'
+        base = '/dev/disk/azure/scsi1/lun'
 
-        # luns go 0-31
-        ascii_base = ord('c')
-
-        return FilePath(base + chr(ascii_base + lun), False)
+        return FilePath(os.path.realpath(base + str(lun)), False)
